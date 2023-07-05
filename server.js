@@ -3,11 +3,15 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
+const itemRouter = require("./routers/item_router");
 
 // Temporal route
 app.get("/", (req, res) => {
   res.send("This is homepage!");
 });
+
+// API endpoint routes
+app.use("/api/items", itemRouter);
 
 // Listener
 mongoose
