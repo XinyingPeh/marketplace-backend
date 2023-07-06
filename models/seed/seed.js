@@ -20,4 +20,3 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PA
     .catch(err => {
         console.log('failed to seed the data')
     })
-
