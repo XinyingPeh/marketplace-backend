@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/UserModel");
 const userRegistrationValidators = require("./validators/userRegistrationValidator");
 const userLoginValidators = require("./validators/userLoginValidator");
+const userEditPersonalInfoValidator = require("./validators/userEditPersonalInfoValidator");
 
 const userControllers = {
   register: async (req, res) => {
@@ -123,6 +124,46 @@ const userControllers = {
     token: token,
   });
 },
+
+editpersonalinfo: async (req, res) => {
+  // Get the user ID from the authenticated request
+  const userId = req.user._id;
+
+  // Get the updated personal information
+  const data = req.body;
+
+  // Validate the updated personal information
+  const validationResult = userEditPersonalInfoValidator.updatePersonalInfoSchema.validate(data);
+  if (validationResult.error) {
+    res.statusCode = 400;
+    return res.json({
+      msg: validationResult.error.details[0].message,
+    });
+  }
+
+  // Update the user's personal information in the database
+  try {
+    await userModel.findByIdAndUpdate(userId, {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      mobile: data.mobile,
+      address: data.address,
+      postcode: data.postcode,
+    });
+  } catch (err) {
+    res.statusCode = 500;
+    return res.json({
+      msg: "failed to update user information",
+    });
+  }
+
+  // Return a success response
+  res.json({
+    msg: "user information updated successfully",
+  });
+},
+
 };
 
 module.exports = userControllers;
