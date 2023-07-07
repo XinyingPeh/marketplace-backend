@@ -6,6 +6,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const itemRouter = require("./routers/item_router");
 
+// parse URL-encoded data from form
+app.use(express.urlencoded({ extended: true }));
+// handle JSON payloads sent in API requests
+app.use(express.json());
 
 app.use(
   cors({
