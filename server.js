@@ -3,12 +3,18 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
+const cors = require("cors");
 const itemRouter = require("./routers/item_router");
 
-// Temporal route
-app.get("/", (req, res) => {
-  res.send("This is homepage!");
-});
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
+// handle cors pre-flight requests
+app.options("*", cors());
 
 // API endpoint routes
 app.use("/api/items", itemRouter);
