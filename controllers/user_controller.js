@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userModel = require("../models/UserModel");
 const userRegistrationValidators = require("./validators/userRegistrationValidator");
 const userLoginValidators = require("./validators/userLoginValidator");
@@ -99,6 +100,29 @@ const userControllers = {
       return res.json({
         msg: "login failed, please check login details",
       });
+    };
+
+  // generate JWT using an external lib
+  const token = jwt.sign(
+    {
+      name: user.name,
+      email: user.email,
+    },
+    process.env.APP_KEY,
+    {
+      expiresIn: "10 days",
+      audience: "FE",
+      issuer: "BE",
+      subject: user._id.toString(), // _id from Mongoose is type of ObjectID,
     }
-  },
+  );
+
+  // return response with JWT
+  res.json({
+    msg: "login successful",
+    token: token,
+  });
+},
 };
+
+module.exports = userControllers;
