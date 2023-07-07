@@ -5,7 +5,6 @@ const registrationValidators = {
     name: Joi.string().min(3).max(100).required(),
     email: Joi.string().min(5).required(),
     password: Joi.string()
-    .min(8)
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     .required()
     .messages({
