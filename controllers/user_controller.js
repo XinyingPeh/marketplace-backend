@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const userModel = require("../models/UserModel");
 const userRegistrationValidators = require("./validators/userRegistrationValidator");
 
@@ -31,5 +32,25 @@ const userControllers = {
         msg: "failed to check for duplicates",
       });
     }
+
+    // apply hashing algo (bcrypt) to given password. Harsh the pw & store in DB
+    const hash = await bcrypt.hash(data.password, 10);
+
+    // use user model to create a new user
+    try {
+      await userModel.create({
+        name: data.name,
+        email: data.email,
+        password: hash,
+      });
+    } catch (err) {
+      res.statusCode = 500;
+      return res.json({
+        msg: "failed to create user",
+      });
+    }
+
+    // return response
+    res.json();
   },
 };
