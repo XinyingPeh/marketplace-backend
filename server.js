@@ -5,6 +5,7 @@ const port = 3000;
 const mongoose = require("mongoose");
 const cors = require("cors");
 const itemRouter = require("./routers/item_router");
+const userRouter = require("./routers/user_router");
 
 // parse URL-encoded data from form
 app.use(express.urlencoded({ extended: true }));
@@ -22,6 +23,8 @@ app.options("*", cors());
 
 // API endpoint routes
 app.use("/api/items", itemRouter);
+
+app.use("/api/users", userRouter);
 
 // Listener
 mongoose
