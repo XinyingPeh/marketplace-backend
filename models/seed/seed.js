@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const ItemModel = require("../ItemModel");
 
 // import data to be seeded in db
-const itemsRaw = require("../items"); // -> array of drink objects
+
+const ItemsRaw = require("../items"); // -> array of product items
 
 // make a connection to db
 mongoose
@@ -14,7 +15,7 @@ mongoose
     console.log("seeding db");
 
     // insert into database using created model
-    const seedResult = await ItemModel.insertMany(itemsRaw);
+    const seedResult = await ItemModel.insertMany(ItemsRaw);
 
     console.log(seedResult);
 
