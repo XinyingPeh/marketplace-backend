@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/UserModel");
 const userRegistrationValidators = require("./validators/userRegistrationValidator");
 const userLoginValidators = require("./validators/userLoginValidator");
-const userEditPersonalInfoValidator = require("./validators/userEditPersonalInfoValidator");
 
 const userControllers = {
   register: async (req, res) => {
@@ -101,69 +100,56 @@ const userControllers = {
       return res.json({
         msg: "login failed, please check login details",
       });
-    };
-
-  // generate JWT using an external lib
-  const token = jwt.sign(
-    {
-      name: user.name,
-      email: user.email,
-    },
-    process.env.APP_KEY,
-    {
-      expiresIn: "10 days",
-      audience: "FE",
-      issuer: "BE",
-      subject: user._id.toString(), // _id from Mongoose is type of ObjectID,
     }
-  );
 
-  // return response with JWT
-  res.json({
-    msg: "login successful",
-    token: token,
-  });
-},
+    // generate JWT using an external lib
+    const token = jwt.sign(
+      {
+        name: user.name,
+        email: user.email,
+      },
+      process.env.APP_KEY,
+      {
+        expiresIn: "10 days",
+        audience: "FE",
+        issuer: "BE",
+        subject: user._id.toString(), // _id from Mongoose is type of ObjectID,
+      }
+    );
 
-editpersonalinfo: async (req, res) => {
-  // Get the user ID from the authenticated request
-  const userId = req.user._id;
-
-  // Get the updated personal information
-  const data = req.body;
-
-  // Validate the updated personal information
-  const validationResult = userEditPersonalInfoValidator.updatePersonalInfoSchema.validate(data);
-  if (validationResult.error) {
-    res.statusCode = 400;
-    return res.json({
-      msg: validationResult.error.details[0].message,
+    // return response with JWT
+    res.json({
+      msg: "login successful",
+      token: token,
     });
-  }
+  },
+  updateUserDetails: async (req, res) => {
+    const userId = res.locals.authUserID;
+    const { name, email, password } = req.body;
 
-  // Update the user's personal information in the database
-  try {
-    await userModel.findByIdAndUpdate(userId, {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      mobile: data.mobile,
-      address: data.address,
-      postcode: data.postcode,
-    });
-  } catch (err) {
-    res.statusCode = 500;
-    return res.json({
-      msg: "failed to update user information",
-    });
-  }
+    try {
+      const user = await userModel.findById(userId);
+      if (!user) {
+        res.statusCode = 404;
+        return res.json({ msg: 'User not found' });
+      }
 
-  // Return a success response
-  res.json({
-    msg: "user information updated successfully",
-  });
-},
+      // Update the user details
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (password) {
+        const hash = await bcrypt.hash(password, 10);
+        user.password = hash;
+      }
 
+      await user.save();
+
+      res.json({ msg: 'User details updated successfully' });
+    } catch (err) {
+      console.error(err);
+      res.statusCode = 500;
+      res.json({ msg: 'Failed to update user details' });
+    }
+  },
 };
-
 module.exports = userControllers;
