@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ItemModel = require("../ItemModel");
 
 // import data to be seeded in db
-const itemsRaw = require("./items"); // -> array of drink objects
+const itemsRaw = require("../items"); // -> array of drink objects
 
 // make a connection to db
 mongoose
