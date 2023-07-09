@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/UserModel");
 const userRegistrationValidators = require("./validators/userRegistrationValidator");
 const userLoginValidators = require("./validators/userLoginValidator");
+const purchaseHistoryModel = require("../models/PurchaseHistoryModel");
 
 const userControllers = {
   register: async (req, res) => {
@@ -131,7 +132,7 @@ const userControllers = {
       const user = await userModel.findById(userId);
       if (!user) {
         res.statusCode = 404;
-        return res.json({ msg: 'User not found' });
+        return res.json({ msg: "User not found" });
       }
 
       // Update the user details
@@ -144,11 +145,22 @@ const userControllers = {
 
       await user.save();
 
-      res.json({ msg: 'User details updated successfully' });
+      res.json({ msg: "User details updated successfully" });
     } catch (err) {
       console.error(err);
       res.statusCode = 500;
-      res.json({ msg: 'Failed to update user details' });
+      res.json({ msg: "Failed to update user details" });
+    }
+  },
+
+  viewPurchaseHistory: async (req, res) => {
+    try {
+      const userID = req.user.id; // Assuming you have a middleware that sets req.user with the authenticated user details
+      const purchaseHistory = await purchaseHistoryModel.find({ user: userID });
+      return res.json(purchaseHistory);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };
