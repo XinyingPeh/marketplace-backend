@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express");
+const session = require("express-session");
+
 const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
@@ -20,6 +22,15 @@ app.use(
 
 // handle cors pre-flight requests
 app.options("*", cors());
+
+// Set up session middleware - for addToCart
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // API endpoint routes
 app.use("/api/items", itemRouter);
