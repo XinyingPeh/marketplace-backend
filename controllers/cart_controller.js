@@ -113,43 +113,43 @@ const cartController = {
     }
   },
 
-  removeFromCart: async (req, res) => {
-    const itemID = req.params.itemID;
+  // removeFromCart: async (req, res) => {
+  //   const itemID = req.params.itemID;
 
-    try {
-      const item = await Item.findById(itemID);
-      if (!item) {
-        return res.status(404).json({ message: "Item not found" });
-      }
+  //   try {
+  //     const item = await Item.findById(itemID);
+  //     if (!item) {
+  //       return res.status(404).json({ message: "Item not found" });
+  //     }
 
-      if (!req.session.cartID) {
-        return res.status(404).json({ message: "Cart not found" });
-      }
+  //     if (!req.session.cartID) {
+  //       return res.status(404).json({ message: "Cart not found" });
+  //     }
 
-      const cart = await Cart.findById(req.session.cartID);
-      if (!cart) {
-        return res.status(404).json({ message: "Cart not found" });
-      }
+  //     const cart = await Cart.findById(req.session.cartID);
+  //     if (!cart) {
+  //       return res.status(404).json({ message: "Cart not found" });
+  //     }
 
-      // Find the index of the item in the cart
-      const itemIndex = cart.items.findIndex(
-        (cartItem) => cartItem.toString() === itemID
-      );
+  //     // Find the index of the item in the cart
+  //     const itemIndex = cart.items.findIndex(
+  //       (cartItem) => cartItem.toString() === itemID
+  //     );
 
-      if (itemIndex === -1) {
-        return res.status(404).json({ message: "Item not found in cart" });
-      }
+  //     if (itemIndex === -1) {
+  //       return res.status(404).json({ message: "Item not found in cart" });
+  //     }
 
-      // Remove the item from the cart
-      cart.items.splice(itemIndex, 1);
-      await cart.save();
+  //     // Remove the item from the cart
+  //     cart.items.splice(itemIndex, 1);
+  //     await cart.save();
 
-      return res.json({ message: "Item removed from cart" });
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Internal server error" });
-    }
-  },
+  //     return res.json({ message: "Item removed from cart" });
+  //   } catch (err) {
+  //     console.error(err);
+  //     return res.status(500).json({ message: "Internal server error" });
+  //   }
+  // },
 
   //   viewCart: async (req, res) => {
   //     try {
@@ -190,16 +190,6 @@ const cartController = {
   //     }
   //   },
 
-  //   viewCart: async (req, res) => {
-  //     // res.send("This is the cart!");
-  //     try {
-  //       const items = await Cart.find();
-  //       res.json(items);
-  //     } catch (err) {
-  //       console.error(err);
-  //       return res.status(500).json({ message: "Internal server error" });
-  //     }
-  //   },
   viewCart: async (req, res) => {
     const cartID = req.params.cartID;
     try {
@@ -208,6 +198,35 @@ const cartController = {
         return res.json({ message: "Cart is empty" });
       }
       return res.json(cart.items);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  removeFromCart: async (req, res) => {
+    const { cartID, itemID } = req.params;
+
+    try {
+      // Find the cart by ID
+      const cart = await Cart.findById(cartID);
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
+
+      // Find the index of the item in the cart's items array
+      const itemIndex = cart.items.findIndex(
+        (itemId) => itemId.toString() === itemID
+      );
+      if (itemIndex === -1) {
+        return res.status(404).json({ message: "Item not found in cart" });
+      }
+
+      // Remove the item from the cart
+      cart.items.splice(itemIndex, 1);
+      await cart.save();
+
+      return res.json({ message: "Item removed from cart" });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Internal server error" });

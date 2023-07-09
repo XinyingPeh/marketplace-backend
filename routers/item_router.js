@@ -38,7 +38,7 @@ router.post("/:itemID/addToCart", cartController.addToCart);
 // viewing the cart
 router.get("/cart/:cartID", cartController.viewCart);
 
-// // removing an item from the cart
-// router.delete("/cart/:cartID/:itemID", cartController.removeFromCart);
+// removing an item from the cart
+router.delete("/cart/:cartID/:itemID", cartController.removeFromCart);
 
 module.exports = router;
