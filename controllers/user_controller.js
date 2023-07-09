@@ -131,7 +131,7 @@ const userControllers = {
       const user = await userModel.findById(userId);
       if (!user) {
         res.statusCode = 404;
-        return res.json({ msg: 'User not found' });
+        return res.json({ msg: "User not found" });
       }
 
       // Update the user details
@@ -144,11 +144,11 @@ const userControllers = {
 
       await user.save();
 
-      res.json({ msg: 'User details updated successfully' });
+      res.json({ msg: "User details updated successfully" });
     } catch (err) {
       console.error(err);
       res.statusCode = 500;
-      res.json({ msg: 'Failed to update user details' });
+      res.json({ msg: "Failed to update user details" });
     }
   },
 };
