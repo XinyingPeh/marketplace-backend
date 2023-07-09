@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const itemRouter = require("./routers/item_router");
 const userRouter = require("./routers/user_router");
+const paymentRouter = require("./routers/payment_router");
 
 // parse URL-encoded data from form
 app.use(express.urlencoded({ extended: true }));
@@ -34,8 +35,8 @@ app.use(
 
 // API endpoint routes
 app.use("/api/items", itemRouter);
-
 app.use("/api/users", userRouter);
+app.use("/api/payments", paymentRouter);
 
 // Listener
 mongoose
