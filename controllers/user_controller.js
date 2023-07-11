@@ -163,5 +163,28 @@ const userControllers = {
       return res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  profile: async (req, res) => {
+    const userId = res.locals.authUserID;
+
+    try {
+      const user = await userModel.findById(userId);
+      if (!user) {
+        res.statusCode = 404;
+        return res.json({ msg: "User not found" });
+      }
+
+      // Return the user profile
+      res.json({
+        name: user.name,
+        email: user.email,
+        // Add any additional profile information you want to include
+      });
+    } catch (err) {
+      console.error(err);
+      res.statusCode = 500;
+      res.json({ msg: "Failed to fetch user profile" });
+    }
+  },
 };
 module.exports = userControllers;
