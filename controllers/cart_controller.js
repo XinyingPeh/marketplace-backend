@@ -90,7 +90,7 @@ const cartController = {
 
       let cart;
       if (req.session.cartID) {
-        console.log("Cart ID:", req.session.cartID);
+        // console.log("Cart ID:", req.session.cartID);
 
         cart = await Cart.findById(req.session.cartID);
       }

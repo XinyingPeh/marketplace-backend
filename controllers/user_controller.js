@@ -154,9 +154,9 @@ const userControllers = {
   },
 
   viewPurchaseHistory: async (req, res) => {
+    const userId = res.locals.authUserID;
     try {
-      const userID = req.user.id; // Assuming you have a middleware that sets req.user with the authenticated user details
-      const purchaseHistory = await purchaseHistoryModel.find({ user: userID });
+      const purchaseHistory = await purchaseHistoryModel.find({ user: userId });
       return res.json(purchaseHistory);
     } catch (err) {
       console.error(err);
