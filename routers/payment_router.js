@@ -4,7 +4,7 @@ const authMiddleware = require("../controllers/middlewares/auth_middleware");
 const paymentController = require("../controllers/payment_controller");
 
 // router endpoints
-router.post('/intents', authMiddleware, paymentController.createIntent);
+router.post('/checkout', authMiddleware, paymentController.checkout);
 
 module.exports = router;
 
