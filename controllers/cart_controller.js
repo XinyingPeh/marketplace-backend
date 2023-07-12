@@ -202,7 +202,7 @@ const cartController = {
     // const userID = req.user._id;
 
     try {
-      const cart = await cartModel.findOne({ user: userID }).populate("items");
+      const cart = await Cart.findOne({ user: userID }).populate("items");
 
       if (!cart) {
         res.statusCode = 404;
