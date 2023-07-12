@@ -124,6 +124,32 @@ const userControllers = {
       token: token,
     });
   },
+
+  viewUserDetails: async (req, res) => {
+    const userId = res.locals.authUserID;
+
+    try {
+      const user = await userModel.findById(userId);
+      if (!user) {
+        res.statusCode = 404;
+        return res.json({ msg: "User not found" });
+      }
+
+      // Only return the name, email, and password fields
+      const userDetails = {
+        name: user.name,
+        email: user.email,
+        password: "*****",
+      };
+
+      res.json({ userDetails });
+    } catch (err) {
+      console.error(err);
+      res.statusCode = 500;
+      res.json({ msg: "Failed to view user details" });
+    }
+  },
+
   updateUserDetails: async (req, res) => {
     const userId = res.locals.authUserID;
     const { name, email, password } = req.body;
