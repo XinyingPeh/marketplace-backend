@@ -135,14 +135,7 @@ const userControllers = {
         return res.json({ msg: "User not found" });
       }
 
-      // Only return the name, email, and password fields
-      const userDetails = {
-        name: user.name,
-        email: user.email,
-        password: "*****",
-      };
-
-      res.json({ userDetails });
+      res.json(user);
     } catch (err) {
       console.error(err);
       res.statusCode = 500;

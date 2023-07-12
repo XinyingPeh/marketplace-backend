@@ -5,7 +5,7 @@ const authMiddleware = require("../controllers/middlewares/auth_middleware");
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);
-router.get("/account", authMiddleware, userController.viewUserDetails);
+router.get("/profile", authMiddleware, userController.viewUserDetails);
 router.put("/update", authMiddleware, userController.updateUserDetails);
 router.get(
   "/purchaseHistory",
