@@ -35,8 +35,8 @@ app.use(
 
 // API endpoint routes
 app.use("/api/items", itemRouter);
-app.use("/api/users", userRouter);
-app.use("/api/payments", paymentRouter);
+app.use("/api/user", userRouter);
+app.use("/api/payment", paymentRouter);
 
 // Listener
 mongoose
