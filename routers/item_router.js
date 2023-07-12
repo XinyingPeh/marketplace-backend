@@ -23,6 +23,7 @@ const express = require("express");
 const router = express.Router();
 const itemController = require("../controllers/item_controller");
 const cartController = require("../controllers/cart_controller");
+const authMiddleware = require("../controllers/middlewares/auth_middleware");
 
 // API endpoint routes for items
 
@@ -33,12 +34,12 @@ router.get("/", itemController.listItems);
 router.get("/:itemID", itemController.getItem);
 
 // adding an item to the cart
-router.post("/:itemID/addToCart", cartController.addToCart);
+router.post("/:itemID/addToCart", authMiddleware, cartController.addToCart);
 
 // viewing the cart
-router.get("/cart/:cartID", cartController.viewCart);
+// router.get("/cart/:cartID", cartController.viewCart);
 
 // removing an item from the cart
-router.delete("/cart/:cartID/:itemID", cartController.removeFromCart);
+// router.delete("/cart/:cartID/:itemID", cartController.removeFromCart);
 
 module.exports = router;
