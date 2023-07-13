@@ -196,7 +196,7 @@ const cartController = {
   //       return res.status(500).json({ message: "Internal server error" });
   //     }
   //   },
-  viewCart: async (req, res) => {
+  getAllItems: async (req, res) => {
     // const cartID = req.params.cartID;
     const userID = res.locals.authUserID;
     // const userID = req.user._id;
