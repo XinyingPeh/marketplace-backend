@@ -175,6 +175,7 @@
 // module.exports = controllers;
 
 const itemModel = require("../models/ItemModel");
+const cartController = require("./cart_controller");
 
 const controllers = {
   listItems: async (req, res) => {
@@ -200,6 +201,29 @@ const controllers = {
       return res.status(500).json({ message: "Internal server error" });
     }
   },
+
+  // addToCart: async (req, res) => {
+  //   const itemID = req.params.itemID;
+  //   const userID = req.user._id;
+
+  //   try {
+  //     // Check if the item exists
+  //     const item = await itemModel.findById(itemID);
+  //     if (!item) {
+  //       res.statusCode = 404;
+  //       return res.json({ error: "Item not found" });
+  //     }
+
+  //     // Add the item to the cart
+  //     await cartController.addToCart(req, res);
+
+  //     // You can customize the response message or data as needed
+  //     res.json({ message: "Item added to cart successfully" });
+  //   } catch (err) {
+  //     res.statusCode = 500;
+  //     return res.json({ error: "Internal server error" });
+  //   }
+  // },
 };
 
 module.exports = controllers;
