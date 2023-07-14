@@ -1,23 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const cartSchema = new mongoose.Schema({
-//   items: [{ type: mongoose.Schema.Types.ObjectId, ref: "ItemModel" }],
-// });
-
-// const Cart = mongoose.model("Cart", cartSchema);
-
-// module.exports = Cart;
-
-// const mongoose = require("mongoose");
-
-// const cartSchema = new mongoose.Schema({
-//   items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
-// });
-
-// const Cart = mongoose.model("Cart", cartSchema);
-
-// module.exports = Cart;
-
 const mongoose = require("mongoose");
 
 const cartSchema = new mongoose.Schema({
@@ -26,10 +6,18 @@ const cartSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+
   items: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Item",
+      item: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+        required: true,
+      },
+      name: String,
+      price: Number,
+      description: String,
+      image: String,
     },
   ],
 });

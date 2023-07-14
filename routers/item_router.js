@@ -36,10 +36,4 @@ router.get("/:itemID", itemController.getItem);
 // adding an item to the cart
 router.post("/:itemID/addToCart", authMiddleware, cartController.addToCart);
 
-// viewing the cart
-// router.get("/cart/:cartID", cartController.viewCart);
-
-// removing an item from the cart
-// router.delete("/cart/:cartID/:itemID", cartController.removeFromCart);
-
 module.exports = router;
