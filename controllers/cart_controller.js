@@ -35,7 +35,7 @@ const cartController = {
         name: item.name,
         price: item.price,
         description: item.description,
-        image: item.image,
+        image: item.image.trim(),
       };
 
       // Add the item details to the cart
