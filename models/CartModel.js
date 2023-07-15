@@ -6,7 +6,6 @@ const cartSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-
   items: [
     {
       item: {
@@ -19,8 +18,16 @@ const cartSchema = new mongoose.Schema({
       description: String,
       image: String,
       product_data: Object,
+      quantity: {
+        type: Number,
+        default: 1,
+      },
     },
   ],
+  total: {
+    type: Number,
+    default: 0,
+  },
 });
 
 const Cart = mongoose.model("Cart", cartSchema);
