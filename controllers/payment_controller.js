@@ -1,6 +1,7 @@
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Cart = require("../models/CartModel");
+const User = require("../models/UserModel");
 
 const paymentController = {
   checkout: async (req, res) => {
@@ -16,7 +17,6 @@ const paymentController = {
       // Create line items for the Stripe checkout session
       const lineItems = cart.items.map((cartItem) => {
         const item = cartItem.item;
-        // console.log(item); // Log the item object to inspect its properties
         return {
           price_data: {
             currency: "sgd",
@@ -25,9 +25,9 @@ const paymentController = {
               images: [item.image.trim()],
               description: item.description,
             },
-            unit_amount: Math.round(item.price * 100), // Ensure a valid integer value
+            unit_amount: Math.round(item.price * 100),
           },
-          quantity: cartItem.quantity, // Use the quantity from the cart item
+          quantity: cartItem.quantity,
         };
       });
 
@@ -41,6 +41,22 @@ const paymentController = {
         throw new Error("Invalid cart total");
       }
 
+      // Get the user's email or name
+      const user = await User.findById(userID);
+      const customerEmail = user.email;
+      const customerName = user.name;
+
+      // Create a Payment Intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(cartTotal * 100),
+        currency: "sgd",
+        metadata: {
+          cartId: cart._id.toString(),
+          customerEmail: customerEmail,
+          customerName: customerName,
+        },
+      });
+
       // Create the Stripe checkout session
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card"],
@@ -48,6 +64,11 @@ const paymentController = {
         mode: "payment",
         success_url: `${process.env.CLIENT_URL}/checkout-success`,
         cancel_url: `${process.env.CLIENT_URL}/checkout-cancel`,
+        payment_intent_data: {
+          metadata: {
+            cartId: cart._id.toString(),
+          },
+        },
       });
 
       res.status(200).json({ session });
