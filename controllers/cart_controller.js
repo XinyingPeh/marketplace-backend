@@ -4,16 +4,12 @@ const User = require("../models/UserModel");
 
 const cartController = {
   addToCart: async (req, res) => {
-    // const userID = req.user._id;
     const userID = res.locals.authUserID;
     const itemID = req.params.itemID;
 
     try {
       const user = await User.findById(userID);
       const item = await Item.findById(itemID);
-      // console.log(userID);
-      // console.log(res.locals.authUserID);
-      // console.log(itemID);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -29,17 +25,29 @@ const cartController = {
         cart = new Cart({ user: userID, items: [] });
       }
 
-      // Create an object to store the item details in the cart
-      const itemDetails = {
-        item: item._id,
-        name: item.name,
-        price: item.price,
-        description: item.description,
-        image: item.image,
-      };
+      // Check if the item already exists in the cart
+      const existingItem = cart.items.find((item) => item.item.equals(itemID));
+      if (existingItem) {
+        existingItem.quantity += 1; // Increment the quantity if the item exists
+      } else {
+        // Create an object to store the item details in the cart
+        const itemDetails = {
+          item: item._id,
+          name: item.name,
+          price: item.price,
+          description: item.description,
+          image: item.image.trim(),
+          quantity: 1, // Set the initial quantity to 1
+        };
 
-      // Add the item details to the cart
-      cart.items.push(itemDetails);
+        // Add the item details to the cart
+        cart.items.push(itemDetails);
+      }
+
+      // Calculate the total quantity and total amount for the cart
+      cart.totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
+      cart.totalAmount = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+
       await cart.save();
 
       return res.json({ message: "Item added to cart", cart: cart });
@@ -78,16 +86,19 @@ const cartController = {
         return res.status(404).json({ message: "Cart not found" });
       }
 
-      // Find the index of the item in the cart's items array
-      const index = cart.items.findIndex(
-        (item) => item && item.item && item.item.toString() === itemID
-      );
-      if (index === -1) {
+      // Find the item in the cart
+      const item = cart.items.find((item) => item.item.equals(itemID));
+      if (!item) {
         return res.status(404).json({ message: "Item not found in cart" });
       }
 
-      // Remove the item from the cart
-      cart.items.splice(index, 1);
+      // Update the cart by removing the item
+      cart.items = cart.items.filter((item) => !item.item.equals(itemID));
+
+      // Calculate the total quantity and total amount for the cart
+      cart.totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
+      cart.totalAmount = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+
       await cart.save();
 
       return res.json({ message: "Item removed from cart" });
