@@ -16,23 +16,30 @@ const paymentController = {
       // Create line items for the Stripe checkout session
       const lineItems = cart.items.map((cartItem) => {
         const item = cartItem.item;
-        console.log('Item Image:', item.image);
-        console.log(item); // Log the item object to inspect its properties
+        // console.log(item); // Log the item object to inspect its properties
         return {
           price_data: {
             currency: "sgd",
             product_data: {
               name: item.name,
-              images:[item.image.trim()],
+              images: [item.image.trim()],
               description: item.description,
             },
             unit_amount: Math.round(item.price * 100), // Ensure a valid integer value
           },
-          quantity: 1,
+          quantity: cartItem.quantity, // Use the quantity from the cart item
         };
       });
-      
 
+      // Calculate the cart total
+      const cartTotal = cart.items.reduce((total, cartItem) => {
+        return total + cartItem.price * cartItem.quantity;
+      }, 0);
+
+      // Check if cart total is a valid number
+      if (isNaN(cartTotal)) {
+        throw new Error("Invalid cart total");
+      }
 
       // Create the Stripe checkout session
       const session = await stripe.checkout.sessions.create({
@@ -52,4 +59,3 @@ const paymentController = {
 };
 
 module.exports = paymentController;
-
