@@ -22,8 +22,8 @@ const paymentController = {
             currency: "sgd",
             product_data: {
               name: item.name,
-              images: [item.image.trim()],
-              description: item.description,
+              images: [item.image],
+              // description: item.description,
             },
             unit_amount: Math.round(item.price * 100),
           },
@@ -62,8 +62,8 @@ const paymentController = {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `${process.env.CLIENT_URL}/checkout-success`,
-        cancel_url: `${process.env.CLIENT_URL}/checkout-cancel`,
+        success_url: `${process.env.CLIENT_URL}/payment/success`,
+        cancel_url: `${process.env.CLIENT_URL}/payment/failed`,
         payment_intent_data: {
           metadata: {
             cartId: cart._id.toString(),
