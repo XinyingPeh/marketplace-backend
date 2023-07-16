@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/UserModel");
 const userRegistrationValidators = require("./validators/userRegistrationValidator");
 const userLoginValidators = require("./validators/userLoginValidator");
+const editProfileValidators = require("./validators/editProfileValidator");
 const purchaseHistoryModel = require("../models/PurchaseHistoryModel");
 
 const userControllers = {
@@ -146,6 +147,14 @@ const userControllers = {
   updateUserDetails: async (req, res) => {
     const userId = res.locals.authUserID;
     const { name, email, password } = req.body;
+
+    // Validate the request body using the updateSchema from editProfileValidators
+    const { error: validationError } = editProfileValidators.updateSchema.validate(req.body);
+
+    if (validationError) {
+      res.statusCode = 400;
+      return res.json({ msg: validationError.details[0].message });
+    }
 
     try {
       const user = await userModel.findById(userId);
