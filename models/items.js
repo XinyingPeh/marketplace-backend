@@ -5,6 +5,18 @@ const items = [
     description:
       "Experience the thrill of an otherworldly battle with VR Space Invader, exclusively available on our VR Experience Marketplace. Engulfed in a virtual reality headset, you'll find yourself seated in the cockpit of a cutting-edge space fighter, ready to defend the galaxy against relentless alien forces. As the invaders draw near, the intensity builds—your ship's engines rumble beneath you, while the VR headset flawlessly tracks your movements, immersing you further into the action. Traverse captivating star systems, each presenting unique challenges, as you unleash a range of futuristic weaponry to decimate your extraterrestrial foes. With seamless controls and immersive visuals, you'll navigate asteroid belts, outmaneuver enemy vessels, and rain down destruction with precision. But it's not just about combat; it's a full sensory experience. From stunning visuals to captivating sound effects and an enthralling soundtrack, every aspect transports you to a reality where heroes are born. VR Space Invader is your ticket to becoming the savior of the universe. Are you ready to step into the cockpit, harness the power of VR, and conquer the stars in an epic sci-fi saga? Get ready to redefine your gaming experience as you embark on this groundbreaking VR adventure—prepare for liftoff!",
     image: "https://i.imgur.com/1avRRaM.jpg",
+    // breadcrumbs: [
+    //   {
+    //     id: 1,
+    //     name: "Experiences",
+    //     href: "/items",
+    //   },
+    //   {
+    //     id: 2,
+    //     name: "VR Space Invader",
+    //     href: null,
+    //   },
+    // ],
   },
   {
     name: "VR Space Rider",
