@@ -23,23 +23,13 @@ const paymentController = {
             product_data: {
               name: item.name,
               images: [item.image],
-              // description: item.description,
+              // description: item.description, // too long to show on checkout page
             },
             unit_amount: Math.round(item.price * 100),
           },
           quantity: cartItem.quantity,
         };
       });
-
-      // Calculate the cart total
-      const cartTotal = cart.items.reduce((total, cartItem) => {
-        return total + cartItem.price * cartItem.quantity;
-      }, 0);
-
-      // Check if cart total is a valid number
-      if (isNaN(cartTotal)) {
-        throw new Error("Invalid cart total");
-      }
 
       // Get the user's email or name
       const user = await User.findById(userID);
@@ -48,7 +38,7 @@ const paymentController = {
 
       // Create a Payment Intent
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(cartTotal * 100),
+        amount: Math.round(cart.total * 100),
         currency: "sgd",
         metadata: {
           cartId: cart._id.toString(),

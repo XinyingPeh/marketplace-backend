@@ -44,9 +44,11 @@ const cartController = {
         cart.items.push(itemDetails);
       }
 
-      // Calculate the total quantity and total amount for the cart
-      cart.totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
-      cart.totalAmount = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+      // Update the cart total
+      cart.total = cart.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
 
       await cart.save();
 
@@ -94,10 +96,10 @@ const cartController = {
 
       // Update the cart by removing the item
       cart.items = cart.items.filter((item) => !item.item.equals(itemID));
-
-      // Calculate the total quantity and total amount for the cart
-      cart.totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
-      cart.totalAmount = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+      cart.total = cart.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
 
       await cart.save();
 
