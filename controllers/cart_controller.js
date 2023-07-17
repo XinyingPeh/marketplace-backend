@@ -36,7 +36,7 @@ const cartController = {
           name: item.name,
           price: item.price,
           description: item.description,
-          image: item.image.trim(),
+          image: item.image,
           quantity: 1, // Set the initial quantity to 1
         };
 
