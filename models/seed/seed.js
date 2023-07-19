@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const ItemModel = require("../ItemModel");
 
 // import data to be seeded in db
-
 const ItemsRaw = require("../items"); // -> array of product items
 
 // make a connection to db
