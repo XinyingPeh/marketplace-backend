@@ -23,7 +23,7 @@ const items = [
     price: 45.99,
     description:
       "Buckle up and prepare for a mind-blowing cosmic race with VR Space Rider, available exclusively on our VR Experience Library platform. Slip on your VR headset and hop onto the futuristic space bike as you embark on a heart-pounding journey through interstellar tracks. Lean into gravity-defying turns, dodge obstacles, and unleash powerful boosts and weaponry in a quest for victory. With seamless controls, stunning visuals, and immersive sound effects, VR Space Rider transports you to a thrilling universe where the thrill of interstellar speed comes alive. Customize your space bike, fine-tuning its performance to outshine the competition. Are you ready to conquer the cosmos and make your mark in the intergalactic racing scene? VR Space Rider awaits, ready to push the boundaries of your racing experience and redefine your sense of speed and adventure. Get ready to rev your engines and unleash the full potential of VR gaming in this game-changing interstellar journey.",
-    image: " https://i.imgur.com/6Tan95q.jpg",
+    image: "https://i.imgur.com/6Tan95q.jpg",
   },
   {
     name: "VR Space Explorer",
