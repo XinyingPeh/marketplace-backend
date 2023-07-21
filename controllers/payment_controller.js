@@ -52,8 +52,8 @@ const paymentController = {
         payment_method_types: ["card"],
         line_items: lineItems,
         mode: "payment",
-        success_url: `${process.env.CLIENT_URL_SUCCESS}`,
-        cancel_url: `${process.env.CLIENT_URL_FAILED}`,
+        success_url: `${process.env.CLIENT_URL}/payment/success`,
+        cancel_url: `${process.env.CLIENT_URL}/payment/failed`,
         payment_intent_data: {
           metadata: {
             cartId: cart._id.toString(),
